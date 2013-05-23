@@ -31,5 +31,5 @@
   (get-in @(::agent robot) [:memory k]))
 
 (defmethod forget ::file-memory [robot k]
-  (swap! (::storage robot) remove k)
+  (send (::agent robot) remove k)
   robot)
