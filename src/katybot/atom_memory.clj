@@ -11,3 +11,7 @@
 (defmethod recall ::atom-memory [robot k]
   (get @(::storage robot) k))
 
+(defmethod forget ::atom-memory [robot k]
+  (swap! (::storage robot) dissoc k)
+  robot)
+

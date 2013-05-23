@@ -11,5 +11,6 @@
 (defmulti shutdown                      :receptor)
 (defmulti memorize (fn [robot k v]     (:memory robot)))
 (defmulti recall   (fn [robot k]       (:memory robot)))
+(defmulti forget   (fn [robot k]       (:memory robot)))
 (defmulti consider (fn [robot event]   (:brain robot)))
 

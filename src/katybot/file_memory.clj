@@ -6,11 +6,17 @@
     (read-string (slurp file))
     {}))
 
+(defn- update-state [state file memory]
+  (spit file memory)
+  (assoc state :memory memory))
+
 (defn- store [state k v]
-  (let [{file :file, memory :memory} state
-        updated-memory (assoc memory k v)]
-    (spit file updated-memory)
-    (assoc state :memory updated-memory)))
+  (let [{file :file, memory :memory} state]
+    (update-state state file (assoc memory k v))))
+
+(defn- remove [state k]
+  (let [{file :file, memory :memory} state]
+    (update-state state file (dissoc memory k))))
 
 (defn +file-memory [robot file]
   (assoc robot
@@ -24,3 +30,6 @@
 (defmethod recall ::file-memory [robot k]
   (get-in @(::agent robot) [:memory k]))
 
+(defmethod forget ::file-memory [robot k]
+  (swap! (::storage robot) remove k)
+  robot)
